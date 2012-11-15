@@ -1,0 +1,12 @@
+*
+
+!.gitignore
+!.emacs
+!.jshintrc
+!.zshrc
+!.Xdefaults
+!.xinitrc
+!.Xmodmap
+!.xmonad/
+!.xmonad/xmonad.hs
+

@@ -1,0 +1,10 @@
+URxvt.saveLines: 1000
+URxvt.scrollBar: false
+URxvt.foreground: #dcdccc
+URxvt.background: #3f3f3f
+URxvt.secondaryScroll: true
+URxvt.font: xft:Inconsolata:pixelsize=14
+
+URxvt.perl-ext-common: default,matcher
+URxvt.urlLauncher: firefox
+URxvt.matcher.button: 1
