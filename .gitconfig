@@ -1,0 +1,9 @@
+[user]
+        name = chris
+        email = chris@localhost
+[core]
+        editor = emacs
+[color]
+        ui = true
+[credential]
+        helper = cache

@@ -8,8 +8,13 @@ xsetroot -cursor_name left_ptr
 
 xsetroot -solid black
 
-redshift -l 53.33:10.0 -t 5700:3600 -g 0.8 -m randr -v &
+#redshift -l 53.33:10.0 -t 5700:3600 -g 0.8 -m randr -v &
 
-eval $(gpg-agent --daemon) &
+trayer --edge top --align left --SetDockType true --SetPartialStrut true \
+       --expand true --width 10 --transparent true --tint 0x333333 --height 12 &
 
-exec ck-launch-session zsh -c "udiskie & xmonad"
+if [ -x /usr/bin/nm-applet ] ; then
+    nm-applet --sm-disable &
+fi
+
+exec zsh -c "udiskie & xmonad"

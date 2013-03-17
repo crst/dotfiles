@@ -2,38 +2,50 @@
 (setq initial-scratch-message "")
 
 
-(add-to-list 'custom-theme-load-path "~/emacs/themes")
-(load-theme 'zenburn t)
-
-
-(setq x-select-enable-clipboard t)
 (setq make-backup-files nil)
-(display-time)
-(global-font-lock-mode t)
-(setq require-final-newline 't)
-(defalias 'yes-or-no-p 'y-or-n-p)
 (blink-cursor-mode -1)
 (column-number-mode t)
 (menu-bar-mode -1)
 (scroll-bar-mode -1)
 (tool-bar-mode -1)
 
+(defalias 'yes-or-no-p 'y-or-n-p)
+(setq x-select-enable-clipboard t)
+(display-time)
+(global-font-lock-mode t)
+(setq require-final-newline 't)
+
+
+(setq scroll-margin 5)
+(setq scroll-step 5)
+
+(setq-default show-trailing-whitespace t)
+(setq-default indicate-empty-lines t)
+
+
+;; ------------------------------------------------------------------------------------------------
 
 (require 'package)
 (add-to-list 'package-archives
              '("marmalade" . "http://marmalade-repo.org/packages/"))
 (package-initialize)
 
-
-(global-set-key (kbd "C-c c") 'comment-region)
-(global-set-key (kbd "C-c C-u c") 'uncomment-region)
+(defun install-if-not-installed (package)
+  (unless (package-installed-p package)
+    (package-refresh-contents)
+    (package-install package)))
 
 
 ;; ------------------------------------------------------------------------------------------------
 
-(add-to-list 'load-path "~/emacs/py")
-(autoload 'python-mode "python-mode.el" "Python mode." t)
-(setq auto-mode-alist (append '(("/*.\.py$" . python-mode)) auto-mode-alist))
+(install-if-not-installed 'zenburn-theme)
+(load-theme 'zenburn t)
+(install-if-not-installed 'solarized-theme)
+
+
+;; ------------------------------------------------------------------------------------------------
+
+(install-if-not-installed 'python-mode)
 
 ;; http://stackoverflow.com/questions/1259873/how-can-i-use-emacs-flymake-mode-for-python-with-pyflakes-and-pylint-checking-co
 (when (load "flymake" t)
@@ -52,25 +64,26 @@
 
 ;; ------------------------------------------------------------------------------------------------
 
-(load "auctex.el" nil t t)
-(load "preview-latex.el" nil t t)
-(setq auto-mode-alist (cons '("\.tex$" . LaTeX-mode) auto-mode-alist))
+(install-if-not-installed 'auctex)
 
+(setq auto-mode-alist (cons '("\.tex$" . LaTeX-mode) auto-mode-alist))
 (setq TeX-PDF-mode t)
 
 
 ;; ------------------------------------------------------------------------------------------------
 
 (add-to-list 'load-path "~/emacs/js")
+(require 'flymake-node-jshint)
+(add-hook 'js-mode-hook (lambda () (flymake-mode 1)))
 
 (setq-default indent-tabs-mode nil)
 (setq js-indent-level 2)
 
-(require 'flymake-node-jshint)
-(add-hook 'js-mode-hook (lambda () (flymake-mode 1)))
-
 
 ;; ------------------------------------------------------------------------------------------------
+
+(install-if-not-installed 'clojure-mode)
+(install-if-not-installed 'paredit)
 
 (defun turn-on-paredit () (paredit-mode 1))
 (add-hook 'clojure-mode-hook 'turn-on-paredit)
@@ -78,7 +91,8 @@
 
 ;; ------------------------------------------------------------------------------------------------
 
-(load "haskell-mode.el" nil t t)
+(install-if-not-installed 'haskell-mode)
+
 (load-library "haskell-site-file")
 (add-hook 'haskell-mode-hook 'turn-on-haskell-doc-mode)
 (add-hook 'haskell-mode-hook 'turn-on-haskell-indentation)
@@ -86,16 +100,3 @@
 
 
 ;; ------------------------------------------------------------------------------------------------
-
-(custom-set-variables
- ;; custom-set-variables was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- '(custom-safe-themes (quote ("78b1c94c1298bbe80ae7f49286e720be25665dca4b89aea16c60dacccfbb0bca" default))))
-(custom-set-faces
- ;; custom-set-faces was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- )
