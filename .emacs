@@ -21,6 +21,7 @@
 
 (setq-default show-trailing-whitespace t)
 (setq-default indicate-empty-lines t)
+(setq-default indent-tabs-mode nil)
 
 
 ;; ------------------------------------------------------------------------------------------------
