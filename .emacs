@@ -14,10 +14,10 @@
 (display-time)
 (global-font-lock-mode t)
 (setq require-final-newline 't)
+(setq default-font "Inconsolata-12")
 
-
-(setq scroll-margin 5)
-(setq scroll-step 5)
+(global-set-key (kbd "C-n") (lambda () (interactive) (next-line) (recenter)))
+(global-set-key (kbd "C-p") (lambda () (interactive) (previous-line) (recenter)))
 
 (setq-default show-trailing-whitespace t)
 (setq-default indicate-empty-lines t)
