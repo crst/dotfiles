@@ -43,6 +43,12 @@
 (load-theme 'zenburn t)
 (install-if-not-installed 'solarized-theme)
 
+(install-if-not-installed 'multiple-cursors)
+(global-set-key (kbd "C-<") 'mc/mark-next-like-this)
+(global-set-key (kbd "C->") 'mc/mark-previous-like-this)
+(global-set-key (kbd "C-c C-<") 'mc/mark-all-like-this)
+(global-set-key (kbd "C-h") 'mc/edit-lines)
+
 
 ;; ------------------------------------------------------------------------------------------------
 
@@ -69,6 +75,10 @@
 
 (setq auto-mode-alist (cons '("\.tex$" . LaTeX-mode) auto-mode-alist))
 (setq TeX-PDF-mode t)
+(setq TeX-auto-save t)
+(setq TeX-parse-self t)
+(setq-default TeX-master nil)
+(add-hook 'LaTeX-mode-hook 'flyspell-mode)
 
 
 ;; ------------------------------------------------------------------------------------------------
