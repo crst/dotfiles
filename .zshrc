@@ -8,8 +8,13 @@ zstyle :compinstall filename '$HOME/.zshrc'
 prompt adam2
 
 HISTFILE=~/.histfile
-HISTSIZE=1000
-SAVEHIST=1000
+HISTSIZE=10000
+SAVEHIST=10000
 unsetopt beep
 bindkey -e
 PATH=~/bin:$PATH
+
+
+export PAGER=less
+export TERM=xterm-256color
+export EDITOR="emacs -nw"

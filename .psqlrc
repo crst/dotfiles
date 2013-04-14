@@ -1,0 +1,15 @@
+\set QUIET yes
+
+
+\pset null NULL
+\pset pager always
+\pset border 2
+\timing on
+\x auto
+\set PSQL_EDITOR emacs -nw
+\set COMP_KEYWORD_CASE upper
+\set PROMPT1 '(%n@%M:%>) [%/] > '
+\set PROMPT2 ''
+
+
+\unset QUIET

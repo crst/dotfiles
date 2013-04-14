@@ -10,4 +10,4 @@
 !.Xmodmap
 !.xmonad/
 !.xmonad/xmonad.hs
-
+!.psqlrc

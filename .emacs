@@ -13,7 +13,7 @@
 (setq x-select-enable-clipboard t)
 (display-time)
 (global-font-lock-mode t)
-(setq default-font "Inconsolata")
+(setq default-font "Inconsolata-12")
 (setq require-final-newline 't)
 (setq-default show-trailing-whitespace t)
 (setq-default indicate-empty-lines t)
@@ -27,21 +27,11 @@
 (add-hook 'post-command-hook (lambda () (recenter)))
 
 
+;; http://emacsredux.com/blog/2013/04/08/kill-line-backward/
+(global-set-key [(shift backspace)] (lambda () (interactive) (kill-line 0) (indent-according-to-mode)))
+
 ;; http://emacsredux.com/blog/2013/03/26/smarter-open-line/
 (global-set-key [(shift return)] (lambda () (interactive) (move-end-of-line nil) (newline-and-indent)))
-
-
-;; http://emacsredux.com/blog/2013/04/03/delete-file-and-buffer/
-(defun delete-file-and-buffer ()
-  (interactive)
-  (let ((filename (buffer-file-name)))
-    (when filename
-      (if (vc-backend filename)
-          (vc-delete-file filename)
-        (progn
-          (delete-file filename)
-          (message "Deleted file %s" filename)
-          (kill-buffer))))))
 
 
 ;; http://emacs-fu.blogspot.de/2013/03/editing-with-root-privileges-once-more.html
@@ -64,10 +54,20 @@
 (show-paren-mode +1)
 
 
+(require 'uniquify)
+(setq uniquify-buffer-name-style 'post-forward)
+(setq uniquify-separator "/")
+
+
+(require 'saveplace)
+(setq-default save-place t)
+
+
 ;; ------------------------------------------------------------------------------------------------
 
 (require 'package)
 (add-to-list 'package-archives
+             '("melpa" . "http://melpa.milkbox.net/packages/")
              '("marmalade" . "http://marmalade-repo.org/packages/"))
 (package-initialize)
 
@@ -92,11 +92,28 @@
 
 (install-if-not-installed 'iedit)
 (require 'iedit)
-(global-set-key (kbd "C-;") 'iedit-mode)
-
+(global-set-key (kbd "C-c C-i") 'iedit-mode)
 
 (install-if-not-installed 'browse-kill-ring)
 (browse-kill-ring-default-keybindings)
+
+
+(install-if-not-installed 'auto-complete)
+(require 'auto-complete-config)
+(add-to-list 'ac-dictionary-directories "~/.emacs.d/ac-dict")
+(ac-config-default)
+
+
+(install-if-not-installed 'helm)
+(helm-mode +1)
+
+(defun helm-grep-project ()
+  (interactive)
+  (let ((project-root (shell-command-to-string "global -p")))
+    (when (not (string= (substring project-root 0 7) "global:"))
+      (helm-do-grep-1 (list (car (split-string project-root "\n"))) '(4) nil '("*")))))
+
+(global-set-key (kbd "C-c C-j") 'helm-grep-project)
 
 
 ;; ------------------------------------------------------------------------------------------------
@@ -165,8 +182,11 @@
 (add-to-list 'auto-mode-alist
              '("\\.php[345]?\\'\\|\\.phtml\\'" . php-mode))
 
+(setq c-basic-offset 4)
+
 (install-if-not-installed 'ggtags)
 (add-hook 'php-mode-hook 'ggtags-mode)
+
 
 ;; http://emacs-fu.blogspot.de/2009/01/navigating-through-source-code-using.html
 (defun create-or-update-gtags ()
