@@ -31,7 +31,8 @@
 ;; ------------------------------------------------------------------------------------------------
 
 (add-hook 'post-command-hook 'recenter)
-
+(global-set-key (kbd "C-<") 'next-buffer)
+(global-set-key (kbd "C->") 'previous-buffer)
 
 ;; http://emacsredux.com/blog/2013/04/08/kill-line-backward/
 (global-set-key [(shift backspace)] (lambda () (interactive) (kill-line 0) (indent-according-to-mode)))

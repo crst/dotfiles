@@ -1,4 +1,4 @@
-URxvt.saveLines: 1000
+URxvt.saveLines: 10000
 URxvt.scrollBar: false
 URxvt.foreground: #dcdccc
 URxvt.background: #3f3f3f
