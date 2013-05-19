@@ -1,5 +1,6 @@
 (setq inhibit-startup-screen t)
 (setq initial-scratch-message "")
+(setq auto-save-default nil)
 (setq make-backup-files nil)
 (blink-cursor-mode -1)
 (menu-bar-mode -1)
@@ -11,20 +12,25 @@
 (column-number-mode t)
 (defalias 'yes-or-no-p 'y-or-n-p)
 (setq x-select-enable-clipboard t)
+(setq display-time-24hr-format t)
+(setq display-time-day-and-date t)
 (display-time)
 (global-font-lock-mode t)
-(setq default-font "Inconsolata-12")
+(set-face-attribute 'default nil :family "DejaVu Sans Mono" :height 100)
+
 (setq require-final-newline 't)
 (setq-default show-trailing-whitespace t)
 (setq-default indicate-empty-lines t)
 (add-hook 'prog-mode-hook 'flyspell-prog-mode)
+
+(add-hook 'prog-mode-hook 'subword-mode)
 (set-default 'truncate-lines +1)
 (global-hl-line-mode +1)
 
 
 ;; ------------------------------------------------------------------------------------------------
 
-(add-hook 'post-command-hook (lambda () (recenter)))
+(add-hook 'post-command-hook 'recenter)
 
 
 ;; http://emacsredux.com/blog/2013/04/08/kill-line-backward/
@@ -41,6 +47,23 @@
     (unless (file-writable-p file)
       (setq file (concat "/sudo:root@localhost:" file)))
     (find-file file)))
+
+
+;; http://emacsredux.com/blog/2013/05/04/rename-file-and-buffer/
+(defun rename-file-and-buffer ()
+  "Rename the current buffer and file it is visiting."
+  (interactive)
+  (let ((filename (buffer-file-name)))
+    (if (not (and filename (file-exists-p filename)))
+        (message "Buffer is not visiting a file!")
+      (let ((new-name (read-file-name "New name: " filename)))
+        (cond
+         ((vc-backend filename) (vc-rename-file filename new-name))
+         (t
+          (rename-file filename new-name t)
+          (set-visited-file-name new-name t t)))))))
+
+(global-set-key (kbd "C-c r")  'rename-file-and-buffer)
 
 
 (require 'ido)
@@ -85,6 +108,31 @@
 
 ;; ------------------------------------------------------------------------------------------------
 
+(install-if-not-installed 'flycheck)
+(require 'flycheck)
+
+(add-hook 'after-init-hook #'global-flycheck-mode)
+(eval-after-load 'flycheck '(setq flycheck-checkers (delq 'emacs-lisp-checkdoc flycheck-checkers)))
+
+(set-face-attribute 'flycheck-error-face nil :foreground "#BC8383" :background "#8B0000" :underline t)
+(set-face-attribute 'flycheck-warning-face nil :foreground "#DFAF8F" :background "#8B670B" :underline t)
+
+(install-if-not-installed 'flycheck-color-mode-line)
+(require 'flycheck-color-mode-line)
+(eval-after-load "flycheck"
+  '(add-hook 'flycheck-mode-hook 'flycheck-color-mode-line-mode))
+
+
+(install-if-not-installed 'magit)
+(setq magit-status-buffer-switch-function 'switch-to-buffer)
+(global-set-key (kbd "C-x g") 'magit-status)
+
+
+(install-if-not-installed 'powerline)
+(require 'powerline)
+(powerline-default-theme)
+
+
 (install-if-not-installed 'move-text)
 (global-set-key [(control shift n)] 'move-text-down)
 (global-set-key [(control shift p)] 'move-text-up)
@@ -92,16 +140,11 @@
 
 (install-if-not-installed 'iedit)
 (require 'iedit)
-(global-set-key (kbd "C-c C-i") 'iedit-mode)
+(global-set-key (kbd "C-c i") 'iedit-mode)
+
 
 (install-if-not-installed 'browse-kill-ring)
 (browse-kill-ring-default-keybindings)
-
-
-(install-if-not-installed 'auto-complete)
-(require 'auto-complete-config)
-(add-to-list 'ac-dictionary-directories "~/.emacs.d/ac-dict")
-(ac-config-default)
 
 
 (install-if-not-installed 'helm)
@@ -113,26 +156,12 @@
     (when (not (string= (substring project-root 0 7) "global:"))
       (helm-do-grep-1 (list (car (split-string project-root "\n"))) '(4) nil '("*")))))
 
-(global-set-key (kbd "C-c C-j") 'helm-grep-project)
+(global-set-key (kbd "C-c j") 'helm-grep-project)
 
 
 ;; ------------------------------------------------------------------------------------------------
 
 (install-if-not-installed 'python-mode)
-
-;; http://stackoverflow.com/questions/1259873/how-can-i-use-emacs-flymake-mode-for-python-with-pyflakes-and-pylint-checking-co
-(when (load "flymake" t)
-  (defun flymake-pyflakes-init ()
-    (let* ((temp-file (flymake-init-create-temp-buffer-copy
-               'flymake-create-temp-inplace))
-       (local-file (file-relative-name
-            temp-file
-            (file-name-directory buffer-file-name))))
-      (list "~/emacs/py/pycheckers"  (list local-file))))
-   (add-to-list 'flymake-allowed-file-name-masks
-             '("\\.py\\'" flymake-pyflakes-init)))
-
-(add-hook 'python-mode-hook 'flymake-mode)
 
 
 ;; ------------------------------------------------------------------------------------------------
@@ -150,11 +179,9 @@
 ;; ------------------------------------------------------------------------------------------------
 
 (add-to-list 'load-path "~/emacs/js")
-(require 'flymake-node-jshint)
-(add-hook 'js-mode-hook (lambda () (flymake-mode 1)))
 
 (setq-default indent-tabs-mode nil)
-(setq js-indent-level 2)
+(setq js-indent-level 4)
 
 
 ;; ------------------------------------------------------------------------------------------------
@@ -200,18 +227,3 @@
     (shell-command "global -q -u && echo 'updated tagfile'")))
 
 (add-hook 'php-mode-hook (lambda () (add-hook 'after-save-hook 'create-or-update-gtags nil 'make-it-local)))
-
-
-;; http://sachachua.com/blog/2008/07/emacs-and-php-on-the-fly-syntax-checking-with-flymake/
-(require 'flymake)
-(defun flymake-php-init ()
-  (let* ((temp (flymake-init-create-temp-buffer-copy 'flymake-create-temp-inplace))
-	 (local (file-relative-name temp (file-name-directory buffer-file-name))))
-    (list "php" (list "-f" local "-l"))))
-
-(add-to-list 'flymake-err-line-patterns
-  '("\\(Parse\\|Fatal\\) error: +\\(.*?\\) in \\(.*?\\) on line \\([0-9]+\\)$" 3 4 nil 2))
-
-(add-to-list 'flymake-allowed-file-name-masks '("\\.php$" flymake-php-init))
-
-(add-hook 'php-mode-hook (lambda () (flymake-mode +1)))
