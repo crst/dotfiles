@@ -27,6 +27,7 @@
 (set-default 'truncate-lines +1)
 (global-hl-line-mode +1)
 
+(setq gc-cons-threshold 20000000)
 
 ;; ------------------------------------------------------------------------------------------------
 
@@ -67,12 +68,6 @@
 (global-set-key (kbd "C-c r")  'rename-file-and-buffer)
 
 
-(require 'ido)
-(setq ido-enable-flex-matching +1)
-(setq ido-everywhere t)
-(ido-mode +1)
-
-
 (require 'paren)
 (setq show-paren-style 'parenthesis)
 (show-paren-mode +1)
@@ -109,19 +104,23 @@
 
 ;; ------------------------------------------------------------------------------------------------
 
+(require 'ido)
+(install-if-not-installed 'flx-ido)
+
+(setq ido-enable-flex-matching +1)
+(setq ido-everywhere t)
+(ido-mode +1)
+(flx-ido-mode +1)
+(setq ido-use-faces nil)
+
+
 (install-if-not-installed 'flycheck)
-(require 'flycheck)
 
 (add-hook 'after-init-hook #'global-flycheck-mode)
 (eval-after-load 'flycheck '(setq flycheck-checkers (delq 'emacs-lisp-checkdoc flycheck-checkers)))
 
-(set-face-attribute 'flycheck-error-face nil :foreground "#BC8383" :background "#8B0000" :underline t)
-(set-face-attribute 'flycheck-warning-face nil :foreground "#DFAF8F" :background "#8B670B" :underline t)
-
-(install-if-not-installed 'flycheck-color-mode-line)
-(require 'flycheck-color-mode-line)
-(eval-after-load "flycheck"
-  '(add-hook 'flycheck-mode-hook 'flycheck-color-mode-line-mode))
+(set-face-attribute 'flycheck-error nil :foreground "#BC8383" :background "#8B0000" :underline t)
+(set-face-attribute 'flycheck-warning nil :foreground "#DFAF8F" :background "#8B670B" :underline t)
 
 
 (install-if-not-installed 'magit)
@@ -130,7 +129,6 @@
 
 
 (install-if-not-installed 'powerline)
-(require 'powerline)
 (powerline-default-theme)
 
 
@@ -139,13 +137,12 @@
 (global-set-key [(control shift p)] 'move-text-up)
 
 
-(install-if-not-installed 'iedit)
-(require 'iedit)
-(global-set-key (kbd "C-c i") 'iedit-mode)
-
-
 (install-if-not-installed 'browse-kill-ring)
 (browse-kill-ring-default-keybindings)
+
+
+(install-if-not-installed 'projectile)
+(projectile-global-mode)
 
 
 (install-if-not-installed 'helm)
@@ -158,11 +155,7 @@
       (helm-do-grep-1 (list (car (split-string project-root "\n"))) '(4) nil '("*")))))
 
 (global-set-key (kbd "C-c j") 'helm-grep-project)
-
-
-;; ------------------------------------------------------------------------------------------------
-
-(install-if-not-installed 'python-mode)
+(global-set-key (kbd "C-c h") 'helm-projectile)
 
 
 ;; ------------------------------------------------------------------------------------------------
@@ -189,16 +182,20 @@
 
 (install-if-not-installed 'clojure-mode)
 (install-if-not-installed 'paredit)
+(install-if-not-installed 'nrepl)
 
 (defun turn-on-paredit () (paredit-mode 1))
 (add-hook 'clojure-mode-hook 'turn-on-paredit)
 
+(add-hook 'nrepl-interaction-mode-hook
+  'nrepl-turn-on-eldoc-mode)
+(setq nrepl-hide-special-buffers t)
+(add-to-list 'same-window-buffer-names "*nrepl*")
 
 ;; ------------------------------------------------------------------------------------------------
 
 (install-if-not-installed 'haskell-mode)
 
-(load-library "haskell-site-file")
 (add-hook 'haskell-mode-hook 'turn-on-haskell-doc-mode)
 (add-hook 'haskell-mode-hook 'turn-on-haskell-indentation)
 (add-hook 'haskell-mode-hook 'font-lock-mode)
@@ -211,6 +208,7 @@
              '("\\.php[345]?\\'\\|\\.phtml\\'" . php-mode))
 
 (setq c-basic-offset 4)
+(setq nxml-child-indent 4)
 
 (install-if-not-installed 'ggtags)
 (add-hook 'php-mode-hook 'ggtags-mode)
