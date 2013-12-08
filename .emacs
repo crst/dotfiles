@@ -182,15 +182,15 @@
 
 (install-if-not-installed 'clojure-mode)
 (install-if-not-installed 'paredit)
-(install-if-not-installed 'nrepl)
+(install-if-not-installed 'cider)
 
-(defun turn-on-paredit () (paredit-mode 1))
-(add-hook 'clojure-mode-hook 'turn-on-paredit)
-
-(add-hook 'nrepl-interaction-mode-hook
-  'nrepl-turn-on-eldoc-mode)
+(add-hook 'cider-mode-hook 'cider-turn-on-eldoc-mode)
 (setq nrepl-hide-special-buffers t)
-(add-to-list 'same-window-buffer-names "*nrepl*")
+(setq cider-popup-stacktraces nil)
+
+(add-hook 'clojure-mode-hook 'paredit-mode)
+(add-hook 'cider-repl-mode-hook 'paredit-mode)
+
 
 ;; ------------------------------------------------------------------------------------------------
 
