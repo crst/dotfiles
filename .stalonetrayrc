@@ -1,0 +1,6 @@
+window_type dock
+background "#3F3F3F"
+icon_size 16
+geometry 10x1-0+0
+kludges force_icons_size
+icon_gravity E

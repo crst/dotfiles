@@ -4,10 +4,12 @@
 !.gitconfig
 !.emacs
 !.jshintrc
-!.zshrc
+!.psqlrc
+!.stalonetrayrc
 !.Xdefaults
 !.xinitrc
 !.Xmodmap
 !.xmonad/
 !.xmonad/xmonad.hs
-!.psqlrc
+!.xmobarrc
+!.zshrc

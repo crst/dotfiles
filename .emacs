@@ -10,6 +10,8 @@
 (put 'narrow-to-region 'disabled nil)
 
 (column-number-mode t)
+(cua-mode t)
+(electric-pair-mode t)
 (defalias 'yes-or-no-p 'y-or-n-p)
 (setq x-select-enable-clipboard t)
 (setq display-time-24hr-format t)
@@ -32,15 +34,6 @@
 ;; ------------------------------------------------------------------------------------------------
 
 (add-hook 'post-command-hook 'recenter)
-(global-set-key (kbd "C-<") 'next-buffer)
-(global-set-key (kbd "C->") 'previous-buffer)
-
-;; http://emacsredux.com/blog/2013/04/08/kill-line-backward/
-(global-set-key [(shift backspace)] (lambda () (interactive) (kill-line 0) (indent-according-to-mode)))
-
-;; http://emacsredux.com/blog/2013/03/26/smarter-open-line/
-(global-set-key [(shift return)] (lambda () (interactive) (move-end-of-line nil) (newline-and-indent)))
-
 
 ;; http://emacs-fu.blogspot.de/2013/03/editing-with-root-privileges-once-more.html
 (defun find-file-as-root ()
@@ -99,13 +92,14 @@
 ;; ------------------------------------------------------------------------------------------------
 
 (install-if-not-installed 'zenburn-theme)
-(load-theme 'zenburn t)
+(require 'zenburn-theme)
 
 
 ;; ------------------------------------------------------------------------------------------------
 
 (require 'ido)
 (install-if-not-installed 'flx-ido)
+(require 'flx-ido)
 
 (setq ido-enable-flex-matching +1)
 (setq ido-everywhere t)
@@ -115,9 +109,11 @@
 
 
 (install-if-not-installed 'flycheck)
+(require 'flycheck)
 
 (add-hook 'after-init-hook #'global-flycheck-mode)
 (eval-after-load 'flycheck '(setq flycheck-checkers (delq 'emacs-lisp-checkdoc flycheck-checkers)))
+(eval-after-load 'flycheck '(setq flycheck-checkers (delq 'javascript-jshint flycheck-checkers)))
 
 (set-face-attribute 'flycheck-error nil :foreground "#BC8383" :background "#8B0000" :underline t)
 (set-face-attribute 'flycheck-warning nil :foreground "#DFAF8F" :background "#8B670B" :underline t)
@@ -129,6 +125,7 @@
 
 
 (install-if-not-installed 'powerline)
+(require 'powerline)
 (powerline-default-theme)
 
 
@@ -147,6 +144,7 @@
 
 (install-if-not-installed 'helm)
 (helm-mode +1)
+(install-if-not-installed 'helm-projectile)
 
 (defun helm-grep-project ()
   (interactive)
@@ -185,9 +183,9 @@
 (install-if-not-installed 'cider)
 
 (add-hook 'cider-mode-hook 'cider-turn-on-eldoc-mode)
-(setq nrepl-hide-special-buffers t)
 (setq cider-popup-stacktraces nil)
 
+(add-hook 'emacs-lisp-mode-hook 'paredit-mode)
 (add-hook 'clojure-mode-hook 'paredit-mode)
 (add-hook 'cider-repl-mode-hook 'paredit-mode)
 
@@ -195,6 +193,7 @@
 ;; ------------------------------------------------------------------------------------------------
 
 (install-if-not-installed 'haskell-mode)
+(install-if-not-installed 'flycheck-hdevtools)
 
 (add-hook 'haskell-mode-hook 'turn-on-haskell-doc-mode)
 (add-hook 'haskell-mode-hook 'turn-on-haskell-indentation)
@@ -203,7 +202,14 @@
 
 ;; ------------------------------------------------------------------------------------------------
 
+(install-if-not-installed 'markdown-mode)
+(install-if-not-installed 'markdown-mode+)
+
+
+;; ------------------------------------------------------------------------------------------------
+
 (install-if-not-installed 'php-mode)
+
 (add-to-list 'auto-mode-alist
              '("\\.php[345]?\\'\\|\\.phtml\\'" . php-mode))
 
