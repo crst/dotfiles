@@ -181,13 +181,16 @@
 (install-if-not-installed 'clojure-mode)
 (install-if-not-installed 'paredit)
 (install-if-not-installed 'cider)
+(install-if-not-installed 'rainbow-delimiters)
 
 (add-hook 'cider-mode-hook 'cider-turn-on-eldoc-mode)
+(setq nrepl-hide-special-buffers t)
 (setq cider-popup-stacktraces nil)
 
 (add-hook 'emacs-lisp-mode-hook 'paredit-mode)
 (add-hook 'clojure-mode-hook 'paredit-mode)
 (add-hook 'cider-repl-mode-hook 'paredit-mode)
+(add-hook 'cider-repl-mode-hook 'rainbow-delimiters-mode)
 
 
 ;; ------------------------------------------------------------------------------------------------
@@ -198,6 +201,14 @@
 (add-hook 'haskell-mode-hook 'turn-on-haskell-doc-mode)
 (add-hook 'haskell-mode-hook 'turn-on-haskell-indentation)
 (add-hook 'haskell-mode-hook 'font-lock-mode)
+
+
+;; ------------------------------------------------------------------------------------------------
+
+(install-if-not-installed 'go-mode)
+(add-hook 'before-save-hook 'gofmt-before-save)
+(add-hook 'go-mode-hook (lambda ()
+                          (local-set-key (kbd "C-c C-r") 'go-remove-unused-imports)))
 
 
 ;; ------------------------------------------------------------------------------------------------
