@@ -1,5 +1,6 @@
 (setq inhibit-startup-screen t)
 (setq initial-scratch-message "")
+(setq initial-major-mode 'org-mode)
 (setq auto-save-default nil)
 (setq make-backup-files nil)
 (blink-cursor-mode -1)
@@ -123,6 +124,8 @@
 (setq magit-status-buffer-switch-function 'switch-to-buffer)
 (global-set-key (kbd "C-x g") 'magit-status)
 
+(install-if-not-installed 'git-timemachine)
+
 
 (install-if-not-installed 'powerline)
 (require 'powerline)
@@ -186,6 +189,7 @@
 (add-hook 'cider-mode-hook 'cider-turn-on-eldoc-mode)
 (setq nrepl-hide-special-buffers t)
 (setq cider-popup-stacktraces nil)
+(setq cider-show-error-buffer nil)
 
 (add-hook 'emacs-lisp-mode-hook 'paredit-mode)
 (add-hook 'clojure-mode-hook 'paredit-mode)
