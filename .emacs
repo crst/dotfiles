@@ -114,7 +114,6 @@
 
 (add-hook 'after-init-hook #'global-flycheck-mode)
 (eval-after-load 'flycheck '(setq flycheck-checkers (delq 'emacs-lisp-checkdoc flycheck-checkers)))
-(eval-after-load 'flycheck '(setq flycheck-checkers (delq 'javascript-jshint flycheck-checkers)))
 
 (set-face-attribute 'flycheck-error nil :foreground "#BC8383" :background "#8B0000" :underline t)
 (set-face-attribute 'flycheck-warning nil :foreground "#DFAF8F" :background "#8B670B" :underline t)
@@ -173,8 +172,6 @@
 
 ;; ------------------------------------------------------------------------------------------------
 
-(add-to-list 'load-path "~/emacs/js")
-
 (setq-default indent-tabs-mode nil)
 (setq js-indent-level 4)
 
@@ -184,7 +181,6 @@
 (install-if-not-installed 'clojure-mode)
 (install-if-not-installed 'paredit)
 (install-if-not-installed 'cider)
-(install-if-not-installed 'rainbow-delimiters)
 
 (add-hook 'cider-mode-hook 'cider-turn-on-eldoc-mode)
 (setq nrepl-hide-special-buffers t)
@@ -205,14 +201,6 @@
 (add-hook 'haskell-mode-hook 'turn-on-haskell-doc-mode)
 (add-hook 'haskell-mode-hook 'turn-on-haskell-indentation)
 (add-hook 'haskell-mode-hook 'font-lock-mode)
-
-
-;; ------------------------------------------------------------------------------------------------
-
-(install-if-not-installed 'go-mode)
-(add-hook 'before-save-hook 'gofmt-before-save)
-(add-hook 'go-mode-hook (lambda ()
-                          (local-set-key (kbd "C-c C-r") 'go-remove-unused-imports)))
 
 
 ;; ------------------------------------------------------------------------------------------------
