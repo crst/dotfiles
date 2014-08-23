@@ -192,6 +192,11 @@
 (add-hook 'cider-repl-mode-hook 'paredit-mode)
 (add-hook 'cider-repl-mode-hook 'rainbow-delimiters-mode)
 
+(eval-after-load 'paredit
+  '(progn
+     (define-key paredit-mode-map (kbd "M-n") 'paredit-forward-slurp-sexp)
+     (define-key paredit-mode-map (kbd "M-p") 'paredit-forward-barf-sexp)))
+
 
 ;; ------------------------------------------------------------------------------------------------
 
