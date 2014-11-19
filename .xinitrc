@@ -14,7 +14,7 @@ stalonetray &
 xmobar &
 
 nm-applet --sm-disable &
-batti &
+cbatticon &
 
 
 exec zsh -c "udiskie & xmonad"

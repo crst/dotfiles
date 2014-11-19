@@ -187,12 +187,6 @@
 
 ;; ------------------------------------------------------------------------------------------------
 
-(setq-default indent-tabs-mode nil)
-(setq js-indent-level 4)
-
-
-;; ------------------------------------------------------------------------------------------------
-
 (install-if-not-installed 'clojure-mode)
 (install-if-not-installed 'paredit)
 (install-if-not-installed 'cider)
