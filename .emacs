@@ -140,6 +140,8 @@
 
 (install-if-not-installed 'git-timemachine)
 
+(install-if-not-installed 'git-gutter)
+(global-git-gutter-mode t)
 
 (install-if-not-installed 'powerline)
 (require 'powerline)
