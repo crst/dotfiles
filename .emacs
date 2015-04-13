@@ -137,11 +137,13 @@
 (install-if-not-installed 'magit)
 (setq magit-status-buffer-switch-function 'switch-to-buffer)
 (global-set-key (kbd "C-x g") 'magit-status)
+(setq magit-last-seen-setup-instructions "1.4.0")
 
 (install-if-not-installed 'git-timemachine)
 
-(install-if-not-installed 'git-gutter)
-(global-git-gutter-mode t)
+(install-if-not-installed 'git-gutter-fringe+)
+(global-git-gutter+-mode t)
+
 
 (install-if-not-installed 'powerline)
 (require 'powerline)
@@ -192,6 +194,7 @@
 (install-if-not-installed 'clojure-mode)
 (install-if-not-installed 'paredit)
 (install-if-not-installed 'cider)
+(setq cider-lein-command "~/bin/lein")
 
 (add-hook 'cider-mode-hook 'cider-turn-on-eldoc-mode)
 (setq nrepl-hide-special-buffers t)
