@@ -179,6 +179,12 @@
 
 ;; ------------------------------------------------------------------------------------------------
 
+(install-if-not-installed 'sqlup-mode)
+(add-hook 'sql-mode-hook 'sqlup-mode)
+
+
+;; ------------------------------------------------------------------------------------------------
+
 (install-if-not-installed 'auctex)
 
 (setq auto-mode-alist (cons '("\.tex$" . LaTeX-mode) auto-mode-alist))
@@ -221,6 +227,10 @@
 (add-hook 'haskell-mode-hook 'turn-on-haskell-indentation)
 (add-hook 'haskell-mode-hook 'font-lock-mode)
 
+;; ------------------------------------------------------------------------------------------------
+
+(install-if-not-installed 'go-mode)
+(add-hook 'before-save-hook 'gofmt-before-save)
 
 ;; ------------------------------------------------------------------------------------------------
 

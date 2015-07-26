@@ -13,7 +13,9 @@ SAVEHIST=10000
 unsetopt beep
 bindkey -e
 PATH=~/bin:$PATH
-
+REPORTTIME=10
+setopt HIST_IGNORE_DUPS
+source /usr/share/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 
 export PAGER=less
 export TERM=xterm-256color
