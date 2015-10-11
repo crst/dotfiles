@@ -9,3 +9,5 @@
         helper = cache
 [alias]
         lag = log --all --graph --pretty=format:'%Cgreen%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset%n' --abbrev-commit --date=relative
+[rebase]
+        autostash = true
