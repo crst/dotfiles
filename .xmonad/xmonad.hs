@@ -22,14 +22,10 @@ myScratchPads = [NS "konsole" "urxvt -title Konsole -e tmux" (title =? "Konsole"
 myLayoutHook = (Tall 1 (3/100) (2/3) ||| Grid ||| noBorders Full)
 
 
-myLogHook = updatePointer (Relative 0.5 0.5)
+myLogHook = updatePointer (0.5, 0.5) (0, 0)
 
 
-            -- http://www.haskell.org/haskellwiki/Xmonad/Frequently_asked_questions#Screens_are_in_wrong_order
-myKeys = [(mask ++ "M-" ++ [key], screenWorkspace scr >>= flip whenJust (windows . action)) | (key, scr)  <- zip "wer" [0,1,2]
-                                                                                            , (action, mask) <- [ (W.view, "") , (W.shift, "S-")]]
-         ++
-         [("M-x M-c", spawn "xscreensaver-command -lock")]
+myKeys = [("M-x M-c", spawn "xscreensaver-command -lock")]
          ++
          [("M-i", namedScratchpadAction myScratchPads "konsole"),
           ("M-o", namedScratchpadAction myScratchPads "scratchpad"),

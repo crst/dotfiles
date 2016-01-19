@@ -16,5 +16,5 @@ xmobar &
 nm-applet --sm-disable &
 cbatticon &
 
-
+xrdb -merge ~/.Xresources
 exec zsh -c "udiskie & xmonad"
