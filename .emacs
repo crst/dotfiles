@@ -236,31 +236,3 @@
 
 (install-if-not-installed 'markdown-mode)
 (install-if-not-installed 'markdown-mode+)
-
-
-;; ------------------------------------------------------------------------------------------------
-
-(install-if-not-installed 'php-mode)
-
-(add-to-list 'auto-mode-alist
-             '("\\.php[345]?\\'\\|\\.phtml\\'" . php-mode))
-
-(setq c-basic-offset 4)
-(setq nxml-child-indent 4)
-
-(install-if-not-installed 'ggtags)
-(add-hook 'php-mode-hook 'ggtags-mode)
-
-
-;; http://emacs-fu.blogspot.de/2009/01/navigating-through-source-code-using.html
-(defun create-or-update-gtags ()
-  (interactive)
-  (if (not (= 0 (call-process "global" nil nil nil " -p")))
-      (let ((olddir default-directory)
-            (rootdir (read-directory-name "gtags: source tree root:" default-directory)))
-        (cd rootdir)
-        (shell-command "gtags -q && echo 'created tagfile'")
-        (cd olddir))
-    (shell-command "global -q -u && echo 'updated tagfile'")))
-
-(add-hook 'php-mode-hook (lambda () (add-hook 'after-save-hook 'create-or-update-gtags nil 'make-it-local)))
