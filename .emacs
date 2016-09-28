@@ -123,6 +123,8 @@
 (flx-ido-mode +1)
 (setq ido-use-faces nil)
 
+(install-if-not-installed 'aggressive-indent)
+(global-aggressive-indent-mode 1)
 
 (install-if-not-installed 'flycheck)
 (require 'flycheck)
@@ -132,6 +134,16 @@
 
 (set-face-attribute 'flycheck-error nil :foreground "#BC8383" :background "#8B0000" :underline t)
 (set-face-attribute 'flycheck-warning nil :foreground "#DFAF8F" :background "#8B670B" :underline t)
+
+(flycheck-define-checker proselint
+  "proselint"
+  :command ("proselint" source-inplace)
+  :error-patterns
+  ((warning line-start (file-name) ":" line ":" column ": "
+            (id (one-or-more (not (any " "))))
+            (message) line-end))
+  :modes (text-mode markdown-mode))
+(add-to-list 'flycheck-checkers 'proselint)
 
 
 (install-if-not-installed 'magit)
@@ -199,10 +211,10 @@
 
 (install-if-not-installed 'clojure-mode)
 (install-if-not-installed 'paredit)
+(install-if-not-installed 'rainbow-delimiters)
 (install-if-not-installed 'cider)
 (setq cider-lein-command "~/bin/lein")
 
-(add-hook 'cider-mode-hook 'cider-turn-on-eldoc-mode)
 (setq nrepl-hide-special-buffers t)
 (setq cider-popup-stacktraces nil)
 (setq cider-show-error-buffer nil)
