@@ -20,15 +20,15 @@
 (display-time)
 (global-font-lock-mode t)
 (set-face-attribute 'default nil :family "DejaVu Sans Mono" :height 100)
-
 (setq require-final-newline 't)
 (setq-default show-trailing-whitespace t)
 (setq-default indicate-empty-lines t)
-(add-hook 'prog-mode-hook 'flyspell-prog-mode)
-
-(add-hook 'prog-mode-hook 'subword-mode)
 (set-default 'truncate-lines +1)
 (global-hl-line-mode +1)
+
+(add-hook 'text-mode-hook 'refill-mode)
+(add-hook 'prog-mode-hook 'flyspell-prog-mode)
+(add-hook 'prog-mode-hook 'subword-mode)
 
 (setq gc-cons-threshold 20000000)
 
